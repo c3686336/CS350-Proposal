@@ -12,6 +12,7 @@
 
 ## 1.1 Background
 
+
 Students at universities (ex.KAIST) face significant difficulties when planning their academic roadmap. They must cross-reference static PDF bulletins (학사요람), tools such as the OTL (Online Timetable and Lectures) Graduation Planner, separate GPA spreadsheets, and course-review portals.
 
 This fragmented workflow causes three problems:
@@ -360,59 +361,54 @@ Detailed architecture belongs in the SDD.
 
 # 4. Use Cases
 
-<!--
-Use cases are especially useful for user-visible workflows.
-They do not need to duplicate every sentence from Section 3.
-Instead, show how multiple requirements work together.
--->
+## UC-1: Plan Future Semesters with Instant GPA Simulation
 
-## UC-1: [Use Case Name]
-
-**Primary Actor:** [Actor]
-
-**Goal:**  
-[What the actor wants to accomplish.]
-
-**Preconditions:**
-
-- ...
-- ...
-
-**Trigger:**  
-[What starts this use case.]
-
-**Main Flow:**
-
-1. The user ...
-2. The system ...
-3. The user ...
-4. The system ...
-
-**Alternative / Failure Flows:**
-
-- **A1: [Condition]**
-  1. ...
-  2. ...
-
-- **A2: [Condition]**
-  1. ...
-  2. ...
-
-**Postconditions:**
-
-- ...
-- ...
-
-**Related Requirements:**  
-FR-1.1, FR-1.2, FR-3.2
+- **Primary Actor:** Student (User)
+- **Goal:** Add future semesters, select planned courses, and input or adjust expected grades to receive real-time updates on semester/ cumulative/major GPAs, as well as graduation requirement progress.
+- **Preconditions:**
+  1. The user's past course history (confirmed grades) is loaded/manually entered.
+  2. The user's department, admission year, and degree track (e.g., single major, minor) are configured according to the Academic Bulletin.
+- **Trigger:** The user adds a planned semester or modifies an expected grade (e.g., A+, B0) for a planned course.
+- **Main Flow:**
+  1. The user adds a future semester (e.g., "Fall 2026") and selects courses to take.
+  2. The system categorizes each course into its graduation requirement bucket (e.g., Major Required, Major Elective, Basic Required) and updates graduation progress bars (e.g., Major Required: 9/12 credits) along with the list of remaining mandatory courses.
+  3. The user assigns anticipated letter grades to some or all of the planned courses, leaving others blank.
+  4. The system recalculates semester GPA, cumulative GPA, and major GPA instantly on the 4.3 scale.
+  5. The user experiments with different letter-grade combinations, observing instant updates to both GPA metrics & degree requirements.
+- **Alternative / Failure Flows:**
+  - **A1: Course Graded on S/U (Pass/Fail)**
+    1. The user adds a course that does not carry numeric grade points (e.g., physical education or research).
+    2. The system excludes the course from GPA calculations while counting its credits toward total graduation completion upon a passing grade.
+- **Postconditions:**
+  1. The planned semester roadmap and simulated GPA metrics are updated and persisted in the user's active session.
+- **Related Requirements:** -
 
 ---
 
-## UC-2: [Use Case Name]
+## UC-2: Grade Distribution for Target GPA
 
-...
-
----
+- **Primary Actor:** Student (User)
+- **Goal:** Obtain the required average grade point and concrete letter-grade combinations (e.g., two A+ grades and one A0) across future courses to achieve a desired target GPA.
+- **Preconditions:**
+  1. Historical courses have confirmed grades.
+  2. At least one planned future course has its grade left blank (unassigned).
+- **Trigger:** The user enters a target GPA (e.g., 3.70 / 4.30) and requests grade distribution calculation.
+- **Main Flow:**
+  1. The user inputs their desired target GPA.
+  2. The system checks all pending courses with unassigned grades and sums their credit hours.
+  3. The system calculates the minimum average grade point needed across those remaining credits to reach the target.
+  4. The system calculates letter-grade combinations (A+, A0, A-, B+, etc.) that meet or exceed the target.
+  5. The system displays the required average grade point along with feasible letter-grade scenarios (e.g., "Option 1: 2x A+ and 1x A0", "Option 2: 3x A+ and 1x B+").
+- **Alternative / Failure Flows:**
+  - **A1: Impossible Target GPA**
+    1. The required grade point exceeds the maximum possible score (4.30).
+    2. The system notifies the user that the target cannot be reached and displays the highest possible GPA achievable even with straight A+ grades.
+  - **A2: Target Already Guaranteed**
+    1. The required average grade point is at or below the minimum passing grade (D- / 0.70).
+    2. The system informs the user that receiving minimum passing grades in all remaining courses is enough to reach the goal.
+- **Postconditions:**
+  1. The student receives grade goals and letter-grade scenarios to plan their upcoming semesters.
+- **Related Requirements:** -s
 
 # 5. Verification and Acceptance Criteria
 

@@ -12,60 +12,72 @@
 
 ## 1.1 Background
 
-<!--
-What problem motivates this software?
-What is inconvenient or impossible with existing solutions?
-Keep this relatively short; this is not a business pitch.
--->
+Students at universities (ex.KAIST) face significant difficulties when planning their academic roadmap. They must cross-reference static PDF bulletins (학사요람), tools such as the OTL (Online Timetable and Lectures) Graduation Planner, separate GPA spreadsheets, and course-review portals.
 
-[Describe the background and motivation of the project.]
+This fragmented workflow causes three problems:
+
+1. **Error-prone manual audits.** Checking completed courses against graduation requirements (major requirements, research credits, elective distributions) one by one is easy to get wrong.
+2. **No future GPA simulation.** Existing planners cannot simulate future GPA under different letter-grade scenarios, so students maintain separate spreadsheets or online calculators.
+3. **Lack of help with target GPAs.** Students aiming for a specific cutoff (graduate admission, honors, scholarships) have no tool that tells them which letter grades they need through their remaining courses.
+
+This project addresses these problems by combining degree-audit validation, transcript import, forward-looking GPA simulation, and course planning in a single real-time tool.
 
 ## 1.2 System Overview
 
-<!--
-Give a high-level description of the proposed software.
-A reader should understand what the product fundamentally does
-after reading this section.
--->
+**(name)**  is an integrated academic planner and GPA simulator built around university degree programs. Its main functions are:
 
-[Project Name] is a system that ...
+- **Transcript import and semester view.** Imports past academic records and lists completed courses by semester, with final grades and credits.
 
-Its primary functions are:
+- **Rules-based graduation audit.** Checks completed and planned courses against the requirements for the student's admission year. Shows progress per category (e.g., Major Required: 9/12 credits) and names exactly which required courses are still missing, according to the student's track (major, minor).
 
-- ...
-- ...
-- ...
+- **Future-semester planning & live GPA simulation.** Lets users create future semesters, choose their planned courses, assign projected letter grades, and see cumulative and major GPA update instantly.
+
+- **Target GPA solver.** Given a desired final GPA, computes the average grade needed across the courses without a grade yet, and suggests letter-grade combinations that achieve it (e.g., how many A+ and A0 are needed).
+
+- **(optional) AI course advisor .** Uses an LLM (e.g., Google Gemini), grounded in course data and OTL student reviews, to recommend courses that fill remaining graduation gaps and match the student's preferences.
 
 ## 1.3 Scope
 
-<!--
-Explicitly state what is and is NOT part of the project.
-This is useful for preventing scope creep.
--->
-
 ### In Scope
 
-- ...
-- ...
+- **Transcript import.** Extracting course codes, titles, credits/AU, and letter grades from a transcript the user provides (file or text upload) or from the academic portal page the user is logged into.
+
+- **Requirement engine.** A configurable rules engine based on the academic bulletin, supporting the primary major and minor, with requirements that vary by admission year (이수요건). (Double-major support can be added as an extension.)
+
+- **Multi-semester planner.** An interface for adding future semesters, selecting courses, and categorizing credit types.
+
+- **Real-time GPA engine.** Recalculates semester, cumulative, and major GPA on the university's grade scale (4.3 scale; a 4.0 scale can be supported), excluding S/U courses from GPA and handling retakes.
+
+- **Reverse grade solver.** Calculates the required average grade point for the ungraded courses and generates letter-grade combinations that reach the target.
+
+- **(optional)AI course recommendation.** Recommendations based on search over course descriptions and OTL reviews.
 
 ### Out of Scope
 
-- ...
-- ...
+- **Course registration.** The system will not register, add, or drop courses, or log into the official registration system.
+
+- **Official audit or certification.** The system gives unofficial planning guidance only. Final graduation approval remains with the university's academic affairs office.
+
+- **Storing portal credentials.** The system will not store university portal passwords. Transcript import uses a client-side session, OAuth (if available), or a file/text upload initiated by the user.
+
+- **LMS integration.** No integration with systems such as KLMS for attendance or assignment tracking.
 
 ## 1.4 Definitions and Terminology
 
 | Term | Definition |
-|------|------------|
-| [Term] | [Definition] |
-| [Term] | [Definition] |
+|---|---|
+| **OTL** | Online Timetable and Lectures. The open-source course timetable, review, and graduation-planning service at KAIST. |
+| **Academic Bulletin (학사요람)** | The official document that defines required curriculum, category minimums, and graduation criteria for each admission year and major. |
+| **Graduation Audit** | A checklist that sorts courses into graduation categories (Major Required, Major Elective, Basic Required, Humanities, Research, etc.) and tracks completion. |
+| **GPA** | Credit-weighted average of grade points, usually on a 4.3 scale. |
+| **Target GPA Solver** | Determines the average grade needed on the remaining courses, and the combinations of letter grades that reach a user-defined target GPA. |
+| **Letter-Grade Combination** | A breakdown of the remaining credits into achievable letter grades (e.g., "two A0s and one B+ across your 9 ungraded credits"). |
 
 ## 1.5 References
 
-- [Relevant specification / API documentation / external system]
-- [Other reference]
-
----
+- KAIST Academic Bulletin (학사요람)
+- KAIST Academic System Portal
+- Google Gemini API documentation
 
 # 2. Overall Description
 
